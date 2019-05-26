@@ -20,7 +20,7 @@ post '/callback' do
   message = hash["entry"][0]["messaging"][0]
   sender = message["sender"]["id"]
   text = message["message"]["text"]
-  endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token=" + ENV["FACEBOOK_ACCESS_TOKEN_KEY"]
+  endpoint = "https://graph.facebook.com/v3.3/me/messages?access_token=" + ENV["FACEBOOK_ACCESS_TOKEN_KEY"]
   content = {
     recipient: {id: sender},
     message: {text: text}
