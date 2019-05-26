@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'dotenv'
+Dotenv.load
 
 get '/' do
   "hello worsss"
