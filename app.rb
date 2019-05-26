@@ -25,6 +25,8 @@ post '/callback' do
     recipient: {id: sender},
     message: {text: text}
   }
+  request_body = content.to_json
+  RestClient.post endpoint, request_body, content_type: :json, accept: :json
   status 201
   body ''
 end
