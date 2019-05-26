@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'json'
 
 get '/' do
   "hello worsss"
@@ -12,3 +13,9 @@ get '/callback' do
   params["hub.challenge"]
 end
 
+post '/callback' do
+  request_body = JSON.parse(request.body.read)
+  puts request_body
+  status 201
+  body ''
+end
