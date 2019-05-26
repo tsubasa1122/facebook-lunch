@@ -17,15 +17,17 @@ end
 
 post '/callback' do
   hash = JSON.parse(request.body.read)
-  message = hash["entry"][0]["messaging"][0]
-  sender = message["sender"]["id"]
-  text = message["message"]["text"]
+  message = hash["entry"][0]["messaging"][0] #entryの0個目のmessagingの0個目
+  sender = message["sender"]["id"] #上記で取得したmessage変数の中のsenderのid
+  text = message["message"]["text"]#上記で取得したmessage変数の中のmessageのtest
   endpoint = "https://graph.facebook.com/v3.3/me/messages?access_token=" + ENV["FACEBOOK_ACCESS_TOKEN_KEY"]
   content = {
     recipient: {id: sender},
     message: {text: text}
   }
   request_body = content.to_json
+
+  #オウム返しの返信をPOSTする（返す）
   RestClient.post endpoint, request_body, content_type: :json, accept: :json
   status 201
   body ''
