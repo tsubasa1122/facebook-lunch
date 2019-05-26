@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'dotenv'
+require 'rest-client'
 Dotenv.load
 
 get '/' do
