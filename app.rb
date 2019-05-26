@@ -17,10 +17,10 @@ end
 
 post '/callback' do
   hash = JSON.parse(request.body.read)
-  message = hash["entry"][0]["messaging"]
-  sender = message[0]["sender"]["id"]
-  text = message[4]["message"]["text"]
-  endpoint = "https://graph.facebook.com/v3.3/me/messages?access_token=" + ENV["FACEBOOK_ACCESS_TOKEN_KEY"]
+  message = hash["entry"][0]["messaging"][0]
+  sender = message["sender"]["id"]
+  text = message["message"]["text"]
+  endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token=" + ENV["FACEBOOK_ACCESS_TOKEN_KEY"]
   content = {
     recipient: {id: sender},
     message: {text: text}
