@@ -66,7 +66,6 @@ helpers do
         p "11回目は配列に入れない"
       end
       categories
-      end
     end
   end
 
