@@ -109,7 +109,7 @@ helpers do
     }
   end
 
-  def get_location messagge
+  def get_location message
     lat = message["message"]["attachments"][0]["payload"]["coordinates"]["lat"]
     long = message["message"]["attachments"][0]["payload"]["cordinates"]["long"]
     [lat, long]
