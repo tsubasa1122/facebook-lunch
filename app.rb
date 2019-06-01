@@ -29,7 +29,7 @@ post '/callback' do
     categories = filter_categories
     request_body = set_quick_reply_of_categories(sender, categories)
     RestClient.post FB_ENDPOINT, request_body, content_type: :json, accept: :json
-    
+
   elsif !message["message"]["quick_reply"].nil?
     $required_category_code = message["message"]["quick_reply"]["payload"]
     request_body = set_quick_reply_of_location(sender)
@@ -59,7 +59,7 @@ end
 
 helpers do
   def get_categories
-    response = JSON.parse(RestClient.get GNAVI_CATEGORY_LARGE_SEARCH_API +"?keyid=#{GNAVI_KEYID}")
+    response = JSON.parse(RestClient.get GNAVI_CATEGORY_LARGE_SEARCH_API + "?keyid=#{GNAVI_KEYID}")
     categories = response["category_l"]
     categories
   end
@@ -69,17 +69,17 @@ helpers do
     get_categories.each_with_index do |category, i|
       if i < 11
         hash = {
-          content_type: "text",
+          content_type: 'text',
           title: category["category_l_name"],
-          payload: category["category_l_code"],
+          payload: category["category_l_code"], # ぐるなびAPIで取得したコード
         }
         p hash
         categories.push(hash)
       else
         p "11回目は配列に入れない"
       end
-      categories
     end
+    categories
   end
 
   def set_quick_reply_of_categories sender, categories
