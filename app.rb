@@ -115,8 +115,8 @@ helpers do
     [lat, long]
   end
 
-  def get_restaurants lat, long, $requested_category_code
-    params = "?keyid=#{GNAVI_KEYID}&latitude=#{lat}&longitude=#{long}&category_l=#{$requested_category_code}&range=3"
+  def get_restaurants lat, long, requested_category_code
+    params = "?keyid=#{GNAVI_KEYID}&latitude=#{lat}&longitude=#{long}&category_l=#{requested_category_code}&range=3"
     restaurants = JSON.parse(RestClient.get GNAVI_SEARCH_API + params)
     restaurants
   end
