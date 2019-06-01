@@ -7,6 +7,7 @@ Dotenv.load
 FB_ENDPOINT = "https://graph.facebook.com/v3.3/me/messages?access_token=" + ENV["FACEBOOK_ACCESS_TOKEN_KEY"]
 GNAVI_KEYID = ENV['GNAVI_KEY']
 GNAVI_CATEGORY_LARGE_SEARCH_API = "https://api.gnavi.co.jp/master/CategoryLargeSearchAPI/v3/"
+GNAVI_SEARCH_API = "https://api.gnavi.co.jp/RestSearchAPI/v3/"
 
 
 get '/' do
@@ -113,6 +114,50 @@ helpers do
     long = message["message"]["attachments"][0]["payload"]["cordinates"]["long"]
     [lat, long]
   end
+
+  def get_restaurants lat, long, $requested_category_code
+    params = "?keyid=#{GNAVI_KEYID}&latitude=#{lat}&longitude=#{long}&category_l=#{$requested_category_code}&range=3"
+    restaurants = JSON.parse(RestClient.get GNAVI_SEARCH_API + params)
+    restaurants
+  end
+
+  def set_restaurants_info restaurants
+    elements = []
+    restaurants["rest"].each do |rest|
+      image = rest["image_url"]["shop_image1"]
+      elements.push(
+        {
+          title: rest["name"],
+          item_url: rest["url_mobile"],
+          image_url: image,
+          subtitle: "[カテゴリー: #{rest["code"]["category_name_l"][0]}] #{rest["pr"]["pr_short"]}",
+          buttons: [
+            {
+              type: "web_url",
+              url: rest["url_mobile"],
+              title: "詳細を見る"
+            }
+          ]
+        }
+      )
+    end
+    elements
+  end
+
+  def set_reply_of_restaurant sender, elements
+    {
+      recipient: {
+        id: sender
+      },
+      message: {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: "generic",
+            elements: elements
+          }
+        }
+      }
+    }.to_json
+  end
 end
-
-
